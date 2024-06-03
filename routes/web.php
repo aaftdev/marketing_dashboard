@@ -89,8 +89,8 @@ Route::get('int-camp-form-change-institution', [IntHomeController::class, 'Inter
 Route::get('admin-institution', [AdminController::class, 'AdminInstitution']);
 Route::get('admin-home', [AdminController::class, 'AdminHomeInstitution']);
 Route::get('admin-campaign', [AdminController::class, 'AdminCampaignInstitution']);
-Route::get('admin-campaign-list', [AdminController::class, 'AdminCampaignListInstitution']);
-Route::get('admin-campaign-download', [AdminController::class, 'AdminCampaignDownload']);
+Route::get('admin-campaign-form', [AdminController::class, 'AdminCampaignFormInstitution']);
+Route::get('admin-landingpage', [AdminController::class, 'AdminLandingPage']);
 
 //IT Admin Dashboard
 Route::get('it-admin-home', [ITAdminController::class, 'ITAdminHome']);
@@ -103,7 +103,7 @@ Route::get('it-admin-lead-campaign-form', [ITAdminController::class, 'ITAdminLea
 Route::get('it-admin-edit-campaign-form', [ITAdminController::class, 'ITAdminEditCampaignForm']);
 Route::get('it-admin-lead-verify-campaign-form', [ITAdminController::class, 'ITAdminLeadVerifyCampaignForm']);
 Route::get('it-admin-camp-form-change-institution', [ITAdminController::class, 'ITAdminChangeCampFormInstitution']);
-
+Route::get('it-admin-view-camp-form', [ITAdminController::class, 'ITAdminViewCampForm']);
 
 Route::get('lead-request-campaign', [ITAdminController::class, 'ITAdminCampaignLeadRequest']);
 Route::get('it-admin-view-campaign', [ITAdminController::class, 'ITAdminView']);
@@ -114,7 +114,6 @@ Route::get('it-admin-users', [ITAdminController::class, 'ITAdminUsers']);
 Route::get('it-admin-integrate-campaign', [ITAdminController::class, 'ITAdminIntegrateCampaign']);
 Route::get('it-admin-lead-campaign', [ITAdminController::class, 'ITAdminLeadCampaign']);
 Route::get('it-admin-change-camp-institution', [ITAdminController::class, 'ITAdminCampaignChangeInstitution']);
-
 
 Route::get('it-admin-landing-page', [ITAdminController::class, 'ITAdminLandingPageList']);
 Route::get('it-admin-create-landing-page', [ITAdminController::class, 'ITAdminCreateLandingPage']);

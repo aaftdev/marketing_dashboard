@@ -415,6 +415,21 @@ class ITAdminController extends Controller
         }
     }
 
+    public function ITAdminViewCampForm(Request $req)
+    {
+        if(session('username') != "")
+        {
+            $campFormId = $req->campaignId;
+            $campFormList = BaseComponent::ViewCampaignFormDetails($campFormId);
+            
+            return response()->json(['campaignDetails' => $campFormList]);
+        }
+        else
+        {
+            return view('user-login');
+        }
+    }
+
     // Landing Page
 
     public function ITAdminLandingPageList()

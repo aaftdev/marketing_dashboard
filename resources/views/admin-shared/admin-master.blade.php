@@ -36,11 +36,30 @@
       .card-backgroundcolor {
         background-color: white !important;
       }
+      .bg-primary{
+        background-color: #83b5ff !important;
+      }
+      .bg-gradient-light{
+        background-image: linear-gradient(195deg, #262de4 0%, #CED4DA 100%) !important;
+      }
+      .bg-skyblue{
+        background-color: #e1e8f3 !important;
+      }
+      #sidebar-text {
+        color:black;
+      }
+      .vertical {
+            border-left: 1px solid black;
+            height: 30px;
+        }
+      table.dataTable {
+        font-size:14px;
+      }
     </style>
   </head>
-  <body class="g-sidenav-show  bg-gray-200">
+  <body class="g-sidenav-show  bg-skyblue">
     {{ $institutionId = session()->get('institutionId')}}  
-    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-light" id="sidenav-main">
       <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ url('admin-home/'. $institutionId) }}">        
@@ -51,7 +70,7 @@
       <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link text-white active bg-gradient-primary" id="adminHomeID" href="{{ url('admin-home/'. $institutionId) }}">
+            <a class="nav-link text-white active bg-primary" id="adminHomeID" href="{{ url('admin-home/'. $institutionId) }}">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-symbols-outlined">home</i>
               </div>
@@ -64,6 +83,14 @@
                 <i class="material-symbols-outlined">campaign</i>
               </div>
               <span class="nav-link-text ms-1">Campaign</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" id="adminCampaignFormID" href="{{ url('admin-campaign-form') }}">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-symbols-outlined">campaign</i>
+              </div>
+              <span class="nav-link-text ms-1">Campaign Form</span>
             </a>
           </li>
           <li class="nav-item">

@@ -209,7 +209,8 @@
           $("#it-adminHomeID").removeClass( "active bg-primary" );
           $("#it-adminCampaignFormID").removeClass("active bg-primary");
           $("#it-adminLandingPageID").addClass("active bg-primary");
-        $('#lpTable').dataTable();          
+          $("#mainHeadingId").empty().html("Marketing Dashboard"); 
+          $('#lpTable').dataTable();          
         if($("#successMesgID").text() !="") {
           $.notify($("#successMesgID").text(), "success");          
         }
@@ -220,8 +221,7 @@
             type:'get',
             url: "/ext-lp-change-institution",
             data: {'institution' : institutionName},          
-            success:function(data){
-              
+            success:function(data){              
               var campBody = $("#lpTable").empty();
               $("#hdnInstituteId").val(data.institutionId[0]);                
               if(data.landingPageList != "" && data.landingPageList != undefined){

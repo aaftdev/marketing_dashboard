@@ -252,7 +252,8 @@
           $("#it-adminHomeID").removeClass( "active bg-primary" );
           $("#it-adminCampaignFormID").removeClass("active bg-primary");
           $("#it-adminLandingPageID").removeClass("active bg-primary");
-        $('#itAdminCampaignTable').dataTable();          
+        $('#itAdminCampaignTable').dataTable();
+        $("#mainHeadingId").empty().html("Marketing Dashboard");          
     });
 
     function viewCampaign(id) {

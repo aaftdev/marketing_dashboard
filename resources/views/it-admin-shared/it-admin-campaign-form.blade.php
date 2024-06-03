@@ -110,7 +110,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalTitleId">Campaign</h5>
+        <h5 class="modal-title" id="modalTitleId">Campaign Form</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">        
@@ -306,18 +306,20 @@
           $("#it-adminHomeID").removeClass( "active bg-primary" );
           $("#it-adminCampaignFormID").addClass("active bg-primary");
           $("#it-adminLandingPageID").removeClass("active bg-primary");
-        $('#itAdminCampaignTable').dataTable();          
+        $('#itAdminCampaignTable').dataTable();   
+        $("#mainHeadingId").empty().html("Marketing Dashboard");       
     });
 
-    function viewCampaign(id) {
+    function viewCampaign(id) {      
         $.ajax({
           type:'get',
-          url: "/it-admin-view-campaign",
+          url: "/it-admin-view-camp-form",
           data: {'campaignId' : id},
           success:function(data){
             if(data){
               $("#viewCampaignModal").modal('show');              
               var camp_Table_View = $("#viewTableId").empty();
+              debugger;
               for(var i = 0; i < data.campaignDetails.length;i++){
                 var camp_Append = "<tr>" +
                                     "<td><b>INSTITUTION</b></td>" + 
@@ -336,8 +338,16 @@
                                     "<td>" + data.campaignDetails[i].campaign_name + "</td>" +
                                   "</tr>" +
                                   "<tr>" +
+                                    "<td><b>CAMPAIGN FORM</b></td>" +
+                                    "<td>" + data.campaignDetails[i].campaign_form_name + "</td>" +
+                                  "</tr>" +
+                                  "<tr>" +
+                                    "<td><b>Key Name</b></td>" +
+                                    "<td>" + data.campaignDetails[i].form_key + "</td>" + 
+                                  "</tr>" +
+                                  "<tr>" +
                                     "<td><b>CAMPAIGN DATE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].campaign_date + "</td>" +
+                                    "<td>" + data.campaignDetails[i].campaign_form_date + "</td>" +
                                   "</tr>" +
                                   "<tr>" +
                                     "<td><b>AGENCY</b></td>" +
@@ -346,55 +356,7 @@
                                   "<tr>" +
                                     "<td><b>LEADSOURCE</b></td>" +
                                     "<td>" + data.campaignDetails[i].leadsource_name + "</td>" + 
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>PERSONA</b></td>" +
-                                    "<td>" + data.campaignDetails[i].persona_name + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>CAMPAIGN PRICE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].campaign_price_name + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>HEADLINE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].headline_name + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" + 
-                                    "<td><b>TARGET LOCATION</b></td>" +
-                                    "<td>" + data.campaignDetails[i].target_location_name + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" + 
-                                    "<td><b>TARGET SEGMENT</b></td>" +
-                                    "<td>" + data.campaignDetails[i].target_segment_name + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>CAMPAIGN SIZE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].campaign_size_name + "</td>" +
-                                  "<tr>" +
-                                  "<tr>" +
-                                    "<td><b>CAMPAIGN VERSION</b></td>" +
-                                    "<td>" + data.campaignDetails[i].campaign_version_name + "</td>" +
-                                  "<tr>" +
-                                  "<tr>" +
-                                    "<td><b>CAMPAIGN TYPE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].campaign_type_name + "</td>" +
-                                  "<tr>" +
-                                  "<tr>" +
-                                    "<td><b>ADSET</b></td>" +
-                                    "<td>" + data.campaignDetails[i].adset + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>ADNAME</b></td>" +
-                                    "<td>" + data.campaignDetails[i].adname + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>CREATIVE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].creative + "</td>" +
-                                  "</tr>" +
-                                  "<tr>" +
-                                    "<td><b>CAMPAIGN LEADSOURCE</b></td>" +
-                                    "<td>" + data.campaignDetails[i].camp_leadsource + "</td>" +
-                                  "</tr>" +
+                                  "</tr>" +                                  
                                   "<tr>" +
                                     "<td><b>CAMPAIGN STATUS</b></td>" +
                                     "<td>" + data.campaignDetails[i].campaign_status_name + "</td>" + 

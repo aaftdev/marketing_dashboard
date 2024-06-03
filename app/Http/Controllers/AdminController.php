@@ -5,79 +5,126 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\ExportAdminCampaign;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-//use Illuminate\Support\Facades\Hash;
+use App\Http\Components\BaseComponent;
 use Illuminate\Support\Facades\Password;
 
 
 class AdminController extends Controller
 {
-    public function AdminInstitution()
-    {
-        if(session('username') != "")
-        {
-            $institution_List = DB::select('Select institution_id, institution_name FROM institution WHERE active = 1');
-            return view('admin-shared.admin-institution', ['institution_List'=>$institution_List]);
-        }
-        else 
-        {
-            return view('user-login');
-        }
-    }
+    // public function AdminInstitution()
+    // {
+    //     if(session('username') != "")
+    //     {
+    //         $institution_List = DB::select('Select institution_id, institution_name FROM institution WHERE active = 1');
+    //         return view('admin-shared.admin-institution', ['institution_List'=>$institution_List]);
+    //     }
+    //     else 
+    //     {
+    //         return view('user-login');
+    //     }
+    // }
 
-    private function GetCampaignList()
-    {
-        $campaignList = DB::select("SELECT c.campaign_id, i.institution_name, pt.program_type_name, c.campaign_name, ls.leadsource_name, 
-                                    cs.course_name, cps.campaign_status_name 
-                                    FROM campaigns c
-                                    LEFT JOIN program_type pt ON c.fk_program_type_id = pt.program_type_id 
-                                    LEFT JOIN leadsource ls ON c.fk_lead_source_id = ls.leadsource_id
-                                    LEFT JOIN courses cs ON c.fk_course_id = cs.course_id
-                                    LEFT JOIN institution i ON i.institution_id = cs.fk_institution_id
-                                    LEFT JOIN campaign_status cps ON c.fk_campaign_status_id = cps.campaign_status_id");
-        return $campaignList;
-    }
+    // private function GetCampaignList()
+    // {
+    //     $campaignList = DB::select("SELECT c.campaign_id, i.institution_name, pt.program_type_name, c.campaign_name, ls.leadsource_name, 
+    //                                 cs.course_name, cps.campaign_status_name 
+    //                                 FROM campaigns c
+    //                                 LEFT JOIN program_type pt ON c.fk_program_type_id = pt.program_type_id 
+    //                                 LEFT JOIN leadsource ls ON c.fk_lead_source_id = ls.leadsource_id
+    //                                 LEFT JOIN courses cs ON c.fk_course_id = cs.course_id
+    //                                 LEFT JOIN institution i ON i.institution_id = cs.fk_institution_id
+    //                                 LEFT JOIN campaign_status cps ON c.fk_campaign_status_id = cps.campaign_status_id");
+    //     return $campaignList;
+    // }
 
     public function AdminHomeInstitution(Request $req)
     {
         if(session('username') != "")
         {
-            //session()->put('institutionId', $req->get('institutionId'));                
-            $campaignList = DB::select("SELECT c.campaign_id, i.institution_name, pt.program_type_name, c.campaign_name, ls.leadsource_name, 
-                                        cs.course_name, cps.campaign_status_name, c.active 
-                                        FROM campaigns c
-                                        LEFT JOIN program_type pt ON c.fk_program_type_id = pt.program_type_id 
-                                        LEFT JOIN leadsource ls ON c.fk_lead_source_id = ls.leadsource_id
-                                        LEFT JOIN courses cs ON c.fk_course_id = cs.course_id
-                                        LEFT JOIN institution i ON i.institution_id = cs.fk_institution_id
-                                        LEFT JOIN campaign_status cps ON c.fk_campaign_status_id = cps.campaign_status_id
-                                        WHERE c.active = 1 ORDER BY c.created_by DESC LIMIT 5");
+            $institutionList = DB::select("SELECT institution_id, institution_name FROM institution WHERE active = 1");
+            $campaignList = BaseComponent::CampaignList("AAFT Online");
+            $landingPageList = BaseComponent::ViewLandingPageList('AAFT Online');
+            $activeCount = BaseComponent::CampaignCount("Active", "AAFT Online");
+                
+            $newCount = BaseComponent::CampaignCount("New", "AAFT Online");
+            
+            $onHoldCount = BaseComponent::CampaignCount("On Hold", "AAFT Online");
 
-            $campaignLeadCount = DB::select("SELECT l.leadsource_name as `Leadsource_Name`, COUNT(c.campaign_id) AS `Campaign_Count` FROM campaigns c
-                                                LEFT JOIN leadsource l ON c.fk_lead_source_id = l.leadsource_id
-                                                LEFT JOIN courses cs ON c.fk_course_id = cs.course_id
-                                                LEFT JOIN institution i ON i.institution_id = cs.fk_institution_id
-                                                WHERE c.active = 1                                            
-                                                GROUP BY l.leadsource_id, l.leadsource_name");
+            $deleteCount = BaseComponent::CampaignCount("Delete", "AAFT Online");
+
+            $lpStatusChart = BaseComponent::LandingPageStatusChart('AAFT Online');
+
+            $lpAgencyChart = BaseComponent::LandingPageAgencyChart('AAFT Online');
             
-            $campaignLeadCollect = collect($campaignLeadCount)->pluck('Campaign_Count', 'Leadsource_Name');
+            $lpCampLeadCollect = collect($lpStatusChart)->pluck('lpProgramCount', 'program_type_name');
+
+            $labels = $lpCampLeadCollect->keys();
+            $lpCampCount = $lpCampLeadCollect->values();
+
+            $lpAgencyLeadCollect = collect($lpAgencyChart)->pluck('lpCourseCount', 'course_name');
+            $lpLabels = $lpAgencyLeadCollect->keys();
+            $lpAgencyCount = $lpAgencyLeadCollect->values();
+                                                
+            $institutionId = DB::table('institution')->select('institution_id')->where('institution_name', '=', 'AAFT Online')->pluck('institution_id');
             
-            $labels = $campaignLeadCollect->keys();
-            $leadCount = $campaignLeadCollect->values();
+            return view('admin-shared.admin-home', compact(['campaignList', 'landingPageList', 'activeCount', 'newCount', 'onHoldCount', 'deleteCount', 'institutionId', 'institutionList', 
+                                                            'labels', 'lpCampCount', 'lpLabels', 'lpAgencyCount']));
             
-            return view('admin-shared.admin-home', compact(['campaignList', 'labels', 'leadCount']));
         }
         else
         {
             return view('user-login');
         }
     }
+
+    // public function ChangeAdminHomeInstitution(Request $req)
+    // {
+    //     if(session('username') != "")
+    //     {
+    //         $institution = $req->institution;
+    //         //$institutionId = DB::table('institution')->where('institution_name', $institution)->value('institution_id');
+    //         $campaignList = BaseComponent::CampaignList($institution);
+    //         $landingPageList = BaseComponent::ViewLandingPageList($institution);
+    //         $activeCount = BaseComponent::CampaignCount("Active", $institution);
+                    
+    //         $newCount = BaseComponent::CampaignCount("New", $institution);
+            
+    //         $onHoldCount = BaseComponent::CampaignCount("On Hold", $institution);
+
+    //         $deleteCount = BaseComponent::CampaignCount("Delete", $institution);
+
+    //         $lpStatusChart = BaseComponent::LandingPageStatusChart('AAFT Online');
+
+    //         $lpAgencyChart = BaseComponent::LandingPageAgencyChart('AAFT Online');
+            
+    //         $lpCampLeadCollect = collect($lpStatusChart)->pluck('lpProgramCount', 'program_type_name');
+
+    //         $labels = $lpCampLeadCollect->keys();
+    //         $lpCampCount = $lpCampLeadCollect->values();
+
+    //         $lpAgencyLeadCollect = collect($lpAgencyChart)->pluck('lpCourseCount', 'course_name');
+    //         $lpLabels = $lpAgencyLeadCollect->keys();
+    //         $lpAgencyCount = $lpAgencyLeadCollect->values();
+
+    //         return response()->json(['campaignList' => $campaignList, 'activeCount' => $activeCount, 'newCount' => $newCount, 
+    //                                  'onHoldCount' => $onHoldCount, 'deleteCount' => $deleteCount, 'landingPageList' => $landingPageList,
+    //                                  'labels' => $labels, 'lpCampCount' => $lpCampCount, 'lpLabels' => $lpLabels, 'lpAgencyCount' => $lpAgencyCount]);
+    //     }
+    //     else
+    //     {
+    //         return view('user-login');
+    //     }
+    // }
 
     public function AdminCampaignInstitution()
     {
         if(session('username') != "")
         {
-            $institutionList = DB::select('Select institution_id, institution_name FROM institution WHERE active = 1');
-            return view('admin-shared.admin-campaign', compact(['institutionList']));
+            $campaignList = BaseComponent::CampaignDetails("AAFT Online");
+            $institutionList = DB::select("SELECT institution_id, institution_name, institution_code FROM institution WHERE active = 1");
+            $instituteId = DB::table('institution')->select('institution_id')->where('institution_name', '=', "AAFT Online")->pluck('institution_id');
+                        
+            return view('admin-shared.admin-campaign', ['campaignList' => $campaignList, 'instituteId' => $instituteId, 'institutionList' => $institutionList]);
         }
         else
         {
@@ -85,26 +132,21 @@ class AdminController extends Controller
         }
     }
 
-    public function AdminCampaignListInstitution(Request $req)
+    public function AdminCampaignFormInstitution()
     {
-        $institutionId = $req->get('institutionId');        
-        $campaignList = DB::select("SELECT c.campaign_id, i.institution_name, pt.program_type_name, c.campaign_name, ls.leadsource_name, 
-                                            cs.course_name, cps.campaign_status_name 
-                                            FROM campaigns c
-                                            LEFT JOIN program_type pt ON c.fk_program_type_id = pt.program_type_id 
-                                            LEFT JOIN leadsource ls ON c.fk_lead_source_id = ls.leadsource_id
-                                            LEFT JOIN courses cs ON c.fk_course_id = cs.course_id
-                                            LEFT JOIN institution i ON i.institution_id = cs.fk_institution_id
-                                            LEFT JOIN campaign_status cps ON c.fk_campaign_status_id = cps.campaign_status_id
-                                            WHERE i.institution_id = ?", [$institutionId]);
-        
-        return response()->json(['campaignList' => $campaignList]);
+        $institutionName = "AAFT Online";
+        $institutionList = DB::select("SELECT institution_id, institution_name, institution_code FROM institution WHERE active = 1");
+        $campaignFormList = BaseComponent::CampaignFormDetails($institutionName);
+        $instituteId = DB::table('institution')->select('institution_id')->where('institution_name', '=', $institutionName)->pluck('institution_id');
+        return view('admin-shared.admin-campaign-form', ['campaignFormList' => $campaignFormList, 'instituteId' => $instituteId, 'institutionList' => $institutionList]);
     }
     
-    public function AdminCampaignDownload(Request $req)
+    public function AdminLandingPage()
     {        
-        $fileName = "campaign - " . date("Y-m-d") . ".xlsx";
-        return Excel::download(new ExportAdminCampaign($req->get('institutionId')), $fileName);
+        $institutionList = DB::select("SELECT institution_id, institution_name, institution_code FROM institution WHERE active = 1");
+        $landingPageList = BaseComponent::ViewLandingPageList('AAFT Online'); 
+        $institutionId = DB::table('institution')->where('institution_name', 'AAFT Online')->value('institution_id');
+        return view('admin-shared.admin-landing-page', ['landingPageList' => $landingPageList, 'institutionId' => $institutionId, 'institutionList' => $institutionList]);
     }
 
     public function LoginUser(Request $req)
