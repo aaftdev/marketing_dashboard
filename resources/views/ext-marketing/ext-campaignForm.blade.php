@@ -712,7 +712,7 @@
     }
 
     function confirmLeadGeneration(){
-      debugger;
+      
       var campFormId = $("#hdnLeadCampaignId").val();
       var email = $("#leadEmailId").val();
       var phone = $("#leadPhoneId").val();
@@ -762,9 +762,8 @@
         url: "/ext-camp-form-change-institution",
         data: {'institution' : institution},          
         success:function(data){
-          debugger;
-          var campBody = $("#campaignFormTable").empty();         
           
+          var campBody = $("#campaignFormTable").empty();         
           if(data.campaignFormList != "" && data.campaignFormList != undefined){
             $("#hdnInstitutionId").val(data.institutionId);            
             var campTheadItem = "<thead>" +
@@ -785,13 +784,13 @@
               
               var campStatusItem = "";
               if(data.campaignFormList[i]['campaign_status_name'] == 'Active') {
-                campStatusItem =  "<button type='button' style='background-color: #1AD5984D; color: #1AD598;'> " + data.campaignFormList[i]['campaign_status_name'] + "</button>";
+                campStatusItem =  "<button type='button' style='background-color: #1AD5984D; color: #1AD598; border:0px #1AD5984D;'> " + data.campaignFormList[i]['campaign_status_name'] + "</button>";
               }
               else if (data.campaignFormList[i]['campaign_status_name'] == 'On Hold') {
-                campStatusItem = "<button type='button' style='background-color: #FFC1074D; color: #FFC107;'>" + data.campaignFormList[i]['campaign_status_name'] + "</button>";
+                campStatusItem = "<button type='button' style='background-color: #FFC1074D; color: #FFC107; border:0px #FFC1074D'>" + data.campaignFormList[i]['campaign_status_name'] + "</button>";
               }
               else if (data.campaignFormList[i]['campaign_status_name'] == 'New') {
-                campStatusItem = "<button type='button' style='background-color: #217EFD4D; color: #217EFD;'>" + data.campaignFormList[i]['campaign_status_name'] + "</button>";
+                campStatusItem = "<button type='button' style='background-color: #217EFD4D; color: #217EFD; border:0px #217EFD4D'>" + data.campaignFormList[i]['campaign_status_name'] + "</button>";
               }
               
               var campApprovalStatusItem = "";

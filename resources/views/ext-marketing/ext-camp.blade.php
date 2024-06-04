@@ -1148,13 +1148,13 @@
               
               var campStatusItem = "";
               if(data.campaignList[i]['campaign_status_name'] == 'Active') {
-                campStatusItem =  "<button type='button' style='background-color: #1AD5984D; color: #1AD598;'> " + data.campaignList[i]['campaign_status_name'] + "</button>";
+                campStatusItem =  "<button type='button' style='background-color: #1AD5984D; color: #1AD598; border:0px #1AD5984D;'> " + data.campaignList[i]['campaign_status_name'] + "</button>";
               }
               else if (data.campaignList[i]['campaign_status_name'] == 'On Hold') {
-                campStatusItem = "<button type='button' style='background-color: #FFC1074D; color: #FFC107;'>" + data.campaignList[i]['campaign_status_name'] + "</button>";
+                campStatusItem = "<button type='button' style='background-color: #FFC1074D; color: #FFC107; border:0px #FFC1074D;'>" + data.campaignList[i]['campaign_status_name'] + "</button>";
               }
               else if (data.campaignList[i]['campaign_status_name'] == 'New') {
-                campStatusItem = "<button type='button' style='background-color: #217EFD4D; color: #217EFD;'>" + data.campaignList[i]['campaign_status_name'] + "</button>";
+                campStatusItem = "<button type='button' style='background-color: #217EFD4D; color: #217EFD; border:0px #217EFD4D;'>" + data.campaignList[i]['campaign_status_name'] + "</button>";
               }
               
               var campApprovalStatusItem = "";

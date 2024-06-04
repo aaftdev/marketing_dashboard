@@ -122,10 +122,10 @@
                 for(var i = 0; i < data.landingPageList.length;i++){
                   var campStatusItem = "";
                   if(data.landingPageList[i]['active'] == 1) {
-                    campStatusItem =  "<button type='button' style='background-color: #1AD5984D; color: #1AD598;'> " + "Active" + "</button>";
+                    campStatusItem =  "<button type='button' style='background-color: #1AD5984D; color: #1AD598; border:0px #1AD5984D'> " + "Active" + "</button>";
                   }
                   else if (data.landingPageList[i]['active'] == 0) {
-                    campStatusItem = "<button type='button' style='background-color: #FFC1074D; color: #FFC107;'>" + "Inactive" + "</button>";
+                    campStatusItem = "<button type='button' style='background-color: #FFC1074D; color: #FFC107; border:0px #FFC1074D'>" + "Inactive" + "</button>";
                   }                                
 
                   var campBodyItem = "<tr><td style='padding-left: 20px;'><span class='text-primary'>"+ data.landingPageList[i]['program_type_name'] +"</span></td>" +

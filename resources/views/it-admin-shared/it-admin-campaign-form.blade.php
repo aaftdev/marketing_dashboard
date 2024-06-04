@@ -409,7 +409,6 @@
           }
         });   
       }
-
       else {
         $("#rejectReasonValId").empty().text("");
         $.ajax({
@@ -486,7 +485,7 @@
     }
 
     function submitLeadCampaign(){
-      debugger;
+      
       var campId = $("#hdnLeadCampaginId").val();
       $.ajax({
           type:'get',
@@ -502,7 +501,7 @@
     }
 
     function leadVerifyCampaign(leadId, email, phone) {
-      debugger;
+      
       $("#leadVerifyCampaignModal").modal('show');
       $("#hdnLeadId").val(leadId);      
       $("#leadDescriptionId").text("Do confirm whether the lead email: '" + email + "' or phone number: '" + phone + "' is integrated in the CRM ?");
